@@ -2,22 +2,14 @@ import os
 import random
 import re
 import signal
-import smtplib
+import sys
 import zipfile
 import zlib
 from datetime import *
-from email.mime.text import MIMEText
 
 import svn.local
-import tenjin
-from lxml import etree
 
 from node import env
-
-tenjin.set_template_encoding("utf-8")
-from tenjin.helpers import *
-import sys
-
 
 mswindows = (sys.platform == "win32")
 
@@ -74,18 +66,12 @@ def logmsgs(logpath, msgs):
     f.write('\n')
     f.close()
 
+
 def logmsg(logpath, msg):
     f = open(os.path.join(env.log, logpath), 'a')
     f.write(msg)
     f.write('\n')
     f.close()
-
-def get_result_fromxml(outputpath):
-    tree = etree.parse(outputpath)
-    root = tree.getroot()
-    result = root.xpath('/robot/suite/status')
-    status = result[0].attrib['status']
-    return status
 
 
 def remove_file(fpath):
@@ -121,39 +107,6 @@ def save_log(job):
     remove_file(log_path)
 
 
-def set_email(test, host):
-    emailfile = env.email
-    context = {
-        "run_time": str(test.job.start_time),
-        #                "job_number":test.job.job_number,
-        "project": test.job.project,
-        "Automation": test.name,
-        'log': 'http://%s/regression/test/log/%s' % (host, test.test_log.id),
-        'test_version': test.revision_number,
-        'result': test.status,
-        'reportlink': 'http://%s/regression/report/%s' % (host, test.id)}
-    path = '\\'.join((emailfile.split('\\'))[:-1])
-    engine = tenjin.Engine(path=[path], cache=tenjin.MemoryCacheStorage())
-    emailstring = engine.render(emailfile, context)
-    return str(emailstring)
-
-
-def send_email(test, host):
-    receiver = test.job.email
-    if receiver != '':
-        sender = env.SENDER
-        subject = '%s_Regression_Test_%s' % (test.job.project, test.status)
-        smtpserver = env.SMPT
-        username = env.USERNAME
-        password = env.PWD
-        msg = MIMEText(set_email(test, host), 'html')
-        msg['Subject'] = subject
-        smtp = smtplib.SMTP_SSL(smtpserver)
-        smtp.login(username, password)
-        smtp.sendmail(sender, receiver, msg.as_string())
-        smtp.quit()
-
-
 def update_Doraemon():
     D = svn.local.LocalClient(env.Doraemon)
     D.update()
@@ -173,17 +126,20 @@ def zip_file(sourcefile, targetfile):
         zf.write(tar, arcname)
     zf.close()
 
+
 def kill(pid):
     try:
         os.kill(pid, signal.SIGTERM)
-    except Exception,e:
+    except Exception, e:
 
         print e
+
 
 def extract_zip(source, target):
     f = zipfile.ZipFile(source, 'r')
     for ff in f.namelist():
         f.extract(ff, target)
+
 
 def random_str(randomlength=15):
     str = ''
@@ -192,6 +148,7 @@ def random_str(randomlength=15):
     for i in range(randomlength):
         str += chars[random.randint(0, length)]
     return str
+
 
 def conver_To_Boolean(value):
     if value.lower() == "true":
