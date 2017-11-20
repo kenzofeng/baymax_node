@@ -47,6 +47,7 @@ def run_script(request, project, test_id):
             robot.terminate()
             robot.kill()
         utility.kill(pid)
+        utility.remove_file(reportpath)
         utility.remove_file(script_path_zip)
         utility.remove_file(script_path)
 
