@@ -20,6 +20,7 @@ def job_start(request, project, test_id):
 
 
 def test_run_log(request, logid):
+    joblog = ""
     try:
         logpath = os.path.join(env.log, logid)
         if os.path.exists(logpath):
