@@ -24,20 +24,15 @@ def run_script(request, project, test_id):
         reportpath_zip = os.path.join(env.report, "%s_%s.zip" % (project, test_id))
         argfile = os.path.join(script_path, 'argfile.txt')
         os.chdir(script_path)
-        if mswindows:
-            command = "pybot.bat --argumentfile  %s --outputdir %s  %s" % (argfile, reportpath, script_path)
-            print command
-            robot = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
-        else:
-            command = "pybot --argumentfile %s --outputdir %s  %s" % (argfile, reportpath, script_path)
-            robot = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
+        command = "python -m robot.run --argumentfile %s --outputdir %s  %s" % (argfile, reportpath, script_path)
+        robot = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
         pid = robot.pid
         while True:
             log = robot.stdout.readline()
             print log
             if robot.poll() is not None:
                 break
-        utility.zip_file(reportpath,reportpath_zip)
+        utility.zip_file(reportpath, reportpath_zip)
         return reportpath_zip
     except Exception, e:
         print e
@@ -50,5 +45,3 @@ def run_script(request, project, test_id):
         utility.remove_file(reportpath)
         utility.remove_file(script_path_zip)
         utility.remove_file(script_path)
-
-
