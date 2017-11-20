@@ -12,12 +12,16 @@ def run_script(request, project, test_id):
         script = request.FILES['script']
         script_path_zip = os.path.join(env.test, request.POST['filename'])
         script_path = os.path.join(env.test, project)
+        utility.remove_file(script_path)
+        utility.remove_file(script_path_zip)
+        reportpath = os.path.join(env.report, "%s_%s" % (project, test_id))
+        reportpath_zip = os.path.join(env.report, "%s.zip" % test_id)
+        utility.remove_file(reportpath)
+        utility.remove_file(reportpath_zip)
         with open(script_path_zip, 'wb') as sc:
             for chunk in script.chunks():
                 sc.write(chunk)
         utility.extract_zip(script_path_zip, script_path)
-        reportpath = os.path.join(env.report, "%s_%s" % (project, test_id))
-        reportpath_zip = os.path.join(env.report, "%s.zip" % test_id)
         argfile = os.path.join(script_path, 'argfile.txt')
         os.chdir(script_path)
         command = "python -m robot.run --argumentfile %s --outputdir %s  %s" % (argfile, reportpath, script_path)
