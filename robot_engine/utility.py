@@ -75,14 +75,15 @@ def logmsg(logpath, msg):
 
 
 def remove_file(fpath):
-    try:
-        os.remove(fpath)
-    except Exception:
-        pass
-    if mswindows:
-        os.system('rd /S/Q %s' % fpath)
-    else:
-        os.system('rm -rf %s' % fpath)
+    if os.path.exists(fpath):
+        try:
+            os.remove(fpath)
+        except Exception:
+            pass
+        if mswindows:
+            os.system('rd /S/Q %s' % fpath)
+        else:
+            os.system('rm -rf %s' % fpath)
 
 
 def save_test_log(test):

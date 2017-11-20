@@ -25,6 +25,7 @@ def run_script(request, project, test_id):
         argfile = os.path.join(script_path, 'argfile.txt')
         os.chdir(script_path)
         command = "python -m robot.run --argumentfile %s --outputdir %s  %s" % (argfile, reportpath, script_path)
+        utility.logmsgs(os.path.join(env.log, test_id), command)
         robot = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
         pid = robot.pid
         while True:
