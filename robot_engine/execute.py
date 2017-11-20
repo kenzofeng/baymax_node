@@ -1,16 +1,12 @@
 import os
-import sys
 
 import utility
 from node import env
 import subprocess
 
-mswindows = (sys.platform == "win32")
-
 
 def run_script(request, project, test_id):
     opath = os.getcwd()
-    robot = None
     pid = 0
     try:
         script = request.FILES['script']
@@ -21,7 +17,7 @@ def run_script(request, project, test_id):
                 sc.write(chunk)
         utility.extract_zip(script_path_zip, script_path)
         reportpath = os.path.join(env.report, "%s_%s" % (project, test_id))
-        reportpath_zip = os.path.join(env.report, "%s_%s.zip" % (project, test_id))
+        reportpath_zip = os.path.join(env.report, "%s.zip" % test_id)
         argfile = os.path.join(script_path, 'argfile.txt')
         os.chdir(script_path)
         command = "python -m robot.run --argumentfile %s --outputdir %s  %s" % (argfile, reportpath, script_path)
@@ -29,13 +25,13 @@ def run_script(request, project, test_id):
         pid = robot.pid
         while True:
             log = robot.stdout.readline()
-            print log
+            utility.logmsgs(os.path.join(env.log, test_id), log.replace('\r\n', ''))
             if robot.poll() is not None:
                 break
         utility.zip_file(reportpath, reportpath_zip)
         return reportpath_zip
     except Exception, e:
-        print e
+        utility.logmsgs(os.path.join(env.log, test_id), e)
     finally:
         os.chdir(opath)
         utility.kill(pid)
