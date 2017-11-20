@@ -38,9 +38,6 @@ def run_script(request, project, test_id):
         print e
     finally:
         os.chdir(opath)
-        if robot is not None:
-            robot.terminate()
-            robot.kill()
         utility.kill(pid)
         utility.remove_file(reportpath)
         utility.remove_file(script_path_zip)
