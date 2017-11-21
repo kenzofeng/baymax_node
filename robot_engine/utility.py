@@ -80,10 +80,13 @@ def remove_file(fpath):
             os.remove(fpath)
         except Exception:
             pass
-        if mswindows:
-            os.system('rd /S/Q %s' % fpath)
-        else:
-            os.system('rm -rf %s' % fpath)
+        try:
+            if mswindows:
+                os.system('rd /S/Q %s' % fpath)
+            else:
+                os.system('rm -rf %s' % fpath)
+        except Exception:
+            pass
 
 
 def save_test_log(test):
@@ -131,9 +134,8 @@ def zip_file(sourcefile, targetfile):
 def kill(pid):
     try:
         os.kill(pid, signal.SIGTERM)
-    except Exception, e:
-
-        print e
+    except Exception:
+        pass
 
 
 def extract_zip(source, target):
