@@ -81,10 +81,11 @@ def remove_file(fpath):
         except Exception:
             pass
         try:
-            if mswindows:
-                os.system('rd /S/Q %s' % fpath)
-            else:
-                os.system('rm -rf %s' % fpath)
+            if os.path.exists(fpath):
+                if mswindows:
+                    os.system('rd /S/Q %s' % fpath)
+                else:
+                    os.system('rm -rf %s' % fpath)
         except Exception:
             pass
 

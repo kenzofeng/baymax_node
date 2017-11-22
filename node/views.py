@@ -19,6 +19,19 @@ def job_start(request, project, test_id):
     return reponse
 
 
+def test_run_raw_log(request, logid):
+    fst = "no log"
+    try:
+        logpath = os.path.join(env.log, logid)
+        if os.path.exists(logpath):
+            f = open(logpath, 'r')
+            fst = f.read()
+            f.close()
+    except Exception, e:
+        return HttpResponse(e)
+    return HttpResponse(fst, content_type='text/html')
+
+
 def test_run_log(request, logid):
     joblog = ""
     try:
