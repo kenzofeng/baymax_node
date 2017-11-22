@@ -35,8 +35,16 @@ def run_script(request, project, test_id):
         while True:
             log = robot.stdout.readline()
             utility.logmsgs(os.path.join(env.log, test_id), log.replace('\r\n', ''))
+            if 'Report:' in log and 'report.html' in log:
+                break
             if robot.poll() is not None:
                 break
+        try:
+            if robot is not None:
+                robot.terminate()
+                robot.kill()
+        except Exception:
+            pass
         utility.zip_file(reportpath, reportpath_zip)
     except Exception, e:
         utility.logmsgs(os.path.join(env.log, test_id), e)
