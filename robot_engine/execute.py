@@ -3,6 +3,9 @@ import os
 import utility
 from node import env
 import subprocess
+import sys
+
+mswindows = (sys.platform == "win32")
 
 
 def run_script(request, project, test_id):
@@ -25,6 +28,8 @@ def run_script(request, project, test_id):
         utility.extract_zip(script_path_zip, script_path)
         argfile = os.path.join(script_path, 'argfile.txt')
         os.chdir(script_path)
+        if mswindows == False:
+            os.system('chmod 777 -R *')
         if os.path.exists(argfile):
             command = "python -m robot.run --argumentfile %s --outputdir %s  %s" % (argfile, reportpath, script_path)
         else:
