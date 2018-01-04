@@ -13,6 +13,7 @@ def run_script(request, project, test_id):
     pid = 0
     reportpath_zip = ""
     try:
+        utility.logmsgs(os.path.join(env.log, test_id), "ip:%s log:"%request.META.get('REMOTE_ADDR'))
         script = request.FILES['script']
         script_path_zip = os.path.join(env.test, request.POST['filename'])
         script_path = os.path.join(env.test, project)
