@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 pip install -U doraemon
 pip install -U bestwestern-storage-client
 pip install -U dstorage-client
