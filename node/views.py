@@ -11,6 +11,9 @@ import env
 from robot_engine import utility
 
 
+def status(request):
+    return JsonResponse({"status":"200"})
+
 @csrf_exempt
 def job_start(request, project, test_id):
     report_zip = execute.run_script(request, project, test_id)
