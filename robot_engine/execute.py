@@ -4,6 +4,7 @@ import utility
 from node import env
 import subprocess
 import sys
+import requests
 
 mswindows = (sys.platform == "win32")
 
@@ -13,7 +14,7 @@ def run_script(request, project, test_id):
     pid = 0
     reportpath_zip = ""
     try:
-        utility.logmsgs(os.path.join(env.log, test_id), "ip:%s \nid:%s \nlog:"%(request.META.get('REMOTE_ADDR'),test_id))
+        utility.logmsgs(os.path.join(env.log, test_id), "ip:%s \nid:%s \nlog:"%(requests.get('http://ip.42.pl/raw').text,test_id))
         script = request.FILES['script']
         script_path_zip = os.path.join(env.test, request.POST['filename'])
         script_path = os.path.join(env.test, project)
