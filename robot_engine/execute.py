@@ -5,6 +5,7 @@ from node import env
 import subprocess
 import sys
 import requests
+import shlex
 
 mswindows = (sys.platform == "win32")
 
@@ -37,7 +38,7 @@ def run_script(request, project, test_id):
         else:
             command = "python -m robot.run --outputdir %s  %s" % (argfile, reportpath, script_path)
         utility.logmsgs(os.path.join(env.log, test_id), command)
-        robot = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
+        robot = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         pid = robot.pid
         while True:
             log = robot.stdout.readline()
