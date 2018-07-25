@@ -13,12 +13,14 @@ scheduler.start()
 
 def execute_shell():
     if not mswindows:
+        print 'execute_shell'
         Base_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         Shell_DIR = os.path.join(Base_DIR, "shell")
         for dirpath, dirnames, filenames in os.walk(Shell_DIR):
             for filename in filenames:
                 f = os.path.join(dirpath, filename)
                 command = "sh {}".format(f)
+                print command
                 log = open(os.path.join(Shell_DIR, "{}.log".format(filename)), 'w')
                 subprocess.call(shlex.split(command), stdout=log, stderr=subprocess.STDOUT)
 
