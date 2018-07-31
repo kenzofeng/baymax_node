@@ -78,16 +78,16 @@ def remove_file(fpath):
     if os.path.exists(fpath):
         try:
             os.remove(fpath)
-        except Exception:
-            pass
+        except Exception as e:
+            print e
         try:
             if os.path.exists(fpath):
                 if mswindows:
                     os.system('rd /S/Q %s' % fpath)
                 else:
                     os.system('rm -rf %s' % fpath)
-        except Exception:
-            pass
+        except Exception as e:
+            print e
 
 
 def save_test_log(test):
