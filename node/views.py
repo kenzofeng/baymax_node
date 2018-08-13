@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import shlex
+
 from django.http import FileResponse, HttpResponse, JsonResponse
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
@@ -9,10 +11,12 @@ from robot_engine import execute
 import os
 import env
 from robot_engine import utility
+import subprocess
 
 
 def status(request):
-    return JsonResponse({"status":"200"})
+    return JsonResponse({"status": "200"})
+
 
 @csrf_exempt
 def job_start(request, project, test_id):
@@ -20,6 +24,13 @@ def job_start(request, project, test_id):
     reponse = FileResponse(open(report_zip, 'rb'))
     reponse["filename"] = "%s_%s" % (project, test_id)
     return reponse
+
+
+def job_stop(request):
+    command = "ps -ef|grep 'python -m' |awk '{print $2}'|xargs kill -9"
+    stop = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
+    rs = stop.stdout.read()
+    return HttpResponse(rs, content_type='text/html')
 
 
 def test_run_raw_log(request, logid):
