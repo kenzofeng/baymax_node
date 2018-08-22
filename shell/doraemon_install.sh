@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 pip install -U doraemon -i http://172.27.0.172:8080/simple  --trusted-host 172.27.0.172
+pip install -U content_server -i http://172.27.0.172:8080/simple  --trusted-host 172.27.0.172
 pip install -U bestwestern-storage-client -i http://172.27.0.172:8080/simple  --trusted-host 172.27.0.172
 pip install -U dstorage-client -i http://172.27.0.172:8080/simple  --trusted-host 172.27.0.172
 pip install -U dswitch3-client -i http://172.27.0.172:8080/simple  --trusted-host 172.27.0.172
