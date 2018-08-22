@@ -6,7 +6,6 @@ import subprocess
 import sys
 import requests
 import shlex
-from robot import run
 
 mswindows = (sys.platform == "win32")
 
