@@ -32,31 +32,31 @@ def run_script(request, project, test_id):
         utility.extract_zip(script_path_zip, script_path)
         argfile = os.path.join(script_path, 'argfile.txt')
         os.chdir(script_path)
-        logfile = os.path.join(env.log, test_id)
-        with open(logfile, 'w') as stdout:
-            run(script_path, stdout=stdout,stderr=stdout)
-        # if mswindows == False:
-        #     os.system('chmod 777 -R *')
-        # if os.path.exists(argfile):
-        #     command = "python -m robot.run --argumentfile %s --outputdir %s  %s" % (argfile, reportpath, script_path)
-        # else:
-        #     command = "python -m robot.run --outputdir %s  %s" % (argfile, reportpath, script_path)
-        # utility.logmsgs(os.path.join(env.log, test_id), command)
-        # robot = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        # pid = robot.pid
-        # while True:
-        #     log = robot.stdout.readline()
-        #     utility.logmsgs(os.path.join(env.log, test_id), log.replace('\r\n', ''))
-        #     if 'Report:' in log and 'report.html' in log:
-        #         break
-        #     if robot.poll() is not None:
-        #         break
-        # try:
-        #     if robot is not None:
-        #         robot.terminate()
-        #         robot.kill()
-        # except Exception:
-        #     pass
+        # logfile = os.path.join(env.log, test_id)
+        # with open(logfile, 'w') as stdout:
+        #     run(script_path, stdout=stdout,stderr=stdout)
+        if mswindows == False:
+            os.system('chmod 777 -R *')
+        if os.path.exists(argfile):
+            command = "python -m robot.run --argumentfile %s --outputdir %s  %s" % (argfile, reportpath, script_path)
+        else:
+            command = "python -m robot.run --outputdir %s  %s" % (argfile, reportpath, script_path)
+        utility.logmsgs(os.path.join(env.log, test_id), command)
+        robot = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        pid = robot.pid
+        while True:
+            log = robot.stdout.readline()
+            utility.logmsgs(os.path.join(env.log, test_id), log.replace('\r\n', ''))
+            if 'Report:' in log and 'report.html' in log:
+                break
+            if robot.poll() is not None:
+                break
+        try:
+            if robot is not None:
+                robot.terminate()
+                robot.kill()
+        except Exception:
+            pass
         utility.zip_file(reportpath, reportpath_zip)
     except Exception, e:
         utility.logmsgs(os.path.join(env.log, test_id), e)
@@ -65,5 +65,5 @@ def run_script(request, project, test_id):
         utility.kill(pid)
         utility.remove_file(reportpath)
         utility.remove_file(script_path_zip)
-        # utility.remove_file(script_path)
+        utility.remove_file(script_path)
         return reportpath_zip
