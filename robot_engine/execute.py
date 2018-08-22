@@ -33,7 +33,7 @@ def run_script(request, project, test_id):
         argfile = os.path.join(script_path, 'argfile.txt')
         os.chdir(script_path)
         logfile = os.path.join(env.log, test_id)
-        with open('stdout.txt', 'w') as stdout:
+        with open(logfile, 'w') as stdout:
             run(script_path, stdout=stdout,stderr=stdout)
         # if mswindows == False:
         #     os.system('chmod 777 -R *')
