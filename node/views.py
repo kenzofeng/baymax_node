@@ -21,10 +21,12 @@ def status(request):
 @csrf_exempt
 def job_start(request, project, test_id):
     try:
-        report_zip = execute.run_script(request, project, test_id)
-        reponse = FileResponse(open(report_zip, 'rb'))
-        reponse["filename"] = "%s_%s" % (project, test_id)
-        return reponse
+        # report_zip = execute.run_script(request, project, test_id)
+        # reponse = FileResponse(open(report_zip, 'rb'))
+        # reponse["filename"] = "%s_%s" % (project, test_id)
+        # return reponse
+        a = "bab"
+        return HttpResponse('sssssssssssssssssssss', content_type='text/html')
     except Exception as e:
         return HttpResponse(e, content_type='text/html')
 
