@@ -33,6 +33,7 @@ def run_script(request, project, test_id):
         argfile = os.path.join(script_path, 'argfile.txt')
         os.chdir(script_path)
         os.system('chmod 777 -R *')
+        os.system('export PATH=/usr/local/platform/java/bin:$PATH')
         if os.path.exists(argfile):
             command = "python -m robot.run --argumentfile %s --outputdir %s  %s" % (argfile, reportpath, script_path)
         else:
