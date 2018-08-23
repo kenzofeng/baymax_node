@@ -34,9 +34,9 @@ def run_script(request, project, test_id):
         os.chdir(script_path)
         os.system('chmod 777 -R *')
         if os.path.exists(argfile):
-            command = "export PATH=/usr/local/platform/java/bin:$PATH&&python -m robot.run --argumentfile %s --outputdir %s  %s" % (argfile, reportpath, script_path)
+            command = "export PATH=/usr/local/platform/java/bin:$PATH;python -m robot.run --argumentfile %s --outputdir %s  %s" % (argfile, reportpath, script_path)
         else:
-            command = "export PATH=/usr/local/platform/java/bin:$PATH&&python -m robot.run --outputdir %s  %s" % (argfile, reportpath, script_path)
+            command = "export PATH=/usr/local/platform/java/bin:$PATH;python -m robot.run --outputdir %s  %s" % (argfile, reportpath, script_path)
         utility.logmsgs(os.path.join(env.log, test_id), command)
         robot = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         pid = robot.pid
