@@ -7,6 +7,7 @@ import sys
 import requests
 import shlex
 import logging
+
 logger = logging.getLogger('django')
 
 
@@ -15,21 +16,17 @@ def run_script(request, project, test_id):
     pid = 0
     reportpath_zip = ""
     try:
-        # utility.logmsgs(os.path.join(env.log, test_id), "ip:%s \nid:%s \nlog:"%(requests.get('http://ip.42.pl/raw').text,test_id))
+        utility.logmsgs(os.path.join(env.log, test_id), "ip:%s \nid:%s \nlog:"%(requests.get('http://ip.42.pl/raw').text,test_id))
         script = request.FILES['script']
-        logger.info('111111111111111111111111')
         script_path_zip = os.path.join(env.test, request.POST['filename'])
-        logger.info('22222222222222222222222')
         script_path = os.path.join(env.test, project)
-        logger.info('3333333333333333333333')
         utility.remove_file(script_path)
-        logger.info('4444444444444444444')
         utility.remove_file(script_path_zip)
-        logger.info('55555555555555555555')
         reportpath = os.path.join(env.report, "%s_%s" % (project, test_id))
         reportpath_zip = os.path.join(env.report, "%s.zip" % test_id)
         utility.remove_file(reportpath)
         utility.remove_file(reportpath_zip)
+        logger.info('66666666666666666666666')
         # with open(script_path_zip, 'wb') as sc:
         #     for chunk in script.chunks():
         #         sc.write(chunk)
@@ -63,8 +60,9 @@ def run_script(request, project, test_id):
         utility.logmsgs(os.path.join(env.log, test_id), e)
     finally:
         os.chdir(opath)
-        utility.kill(pid)
-        utility.remove_file(reportpath)
-        utility.remove_file(script_path_zip)
+        logger.info('7777777777777777777777')
+        # utility.kill(pid)
+        # utility.remove_file(reportpath)
+        # utility.remove_file(script_path_zip)
         # utility.remove_file(script_path)
         return reportpath_zip
