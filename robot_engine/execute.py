@@ -6,6 +6,8 @@ import subprocess
 import sys
 import requests
 import shlex
+import logging
+logger = logging.getLogger('django')
 
 
 def run_script(request, project, test_id):
@@ -15,10 +17,15 @@ def run_script(request, project, test_id):
     try:
         # utility.logmsgs(os.path.join(env.log, test_id), "ip:%s \nid:%s \nlog:"%(requests.get('http://ip.42.pl/raw').text,test_id))
         script = request.FILES['script']
+        logger.info('111111111111111111111111')
         script_path_zip = os.path.join(env.test, request.POST['filename'])
+        logger.info('22222222222222222222222')
         script_path = os.path.join(env.test, project)
+        logger.info('3333333333333333333333')
         utility.remove_file(script_path)
+        logger.info('4444444444444444444')
         utility.remove_file(script_path_zip)
+        logger.info('55555555555555555555')
         reportpath = os.path.join(env.report, "%s_%s" % (project, test_id))
         reportpath_zip = os.path.join(env.report, "%s.zip" % test_id)
         utility.remove_file(reportpath)
