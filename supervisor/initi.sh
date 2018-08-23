@@ -7,3 +7,4 @@ sudo mkdir -p /var/run/supervisord
 sudo /usr/local/bin/supervisord -c /etc/supervisord.conf
 sed -i '$a sudo /usr/local/bin/supervisord -c /etc/supervisord.conf' /etc/rc.d/rc.local
 sed -i '$a sudo supervisorctl start' /etc/rc.d/rc.local
+sudo ln -s /usr/local/bin/supervisorctl /usr/bin/supervisorctl
