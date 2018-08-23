@@ -12,6 +12,8 @@ import os
 import env
 from robot_engine import utility
 import subprocess
+import logging
+logger = logging.getLogger(__name__)
 
 
 def status(request):
@@ -25,8 +27,8 @@ def job_start(request, project, test_id):
         # reponse = FileResponse(open(report_zip, 'rb'))
         # reponse["filename"] = "%s_%s" % (project, test_id)
         # return reponse
-        print project
-        print test_id
+        logger.info(test_id)
+        logger.info(project)
         return HttpResponse('aaaaaaaaaa', content_type='text/html')
     except Exception as e:
         return HttpResponse(e, content_type='text/html')
