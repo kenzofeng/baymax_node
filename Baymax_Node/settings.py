@@ -129,3 +129,6 @@ LOGGING = {
         },
     },
 }
+
+path = os.environ["PATH"]
+os.environ["PATH"] = '/usr/local/platform/java/bin'+':'+os.environ["PATH"]
