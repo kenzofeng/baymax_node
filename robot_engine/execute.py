@@ -24,10 +24,8 @@ def run_script(request, project, test_id):
         utility.remove_file(script_path_zip)
         reportpath = os.path.join(env.report, "%s_%s" % (project, test_id))
         reportpath_zip = os.path.join(env.report, "%s.zip" % test_id)
-        logger.info('55555555555555555555')
         utility.remove_file(reportpath)
         utility.remove_file(reportpath_zip)
-        logger.info('66666666666666666666666')
         with open(script_path_zip, 'wb') as sc:
             for chunk in script.chunks():
                 sc.write(chunk)
@@ -61,7 +59,6 @@ def run_script(request, project, test_id):
         utility.logmsgs(os.path.join(env.log, test_id), e)
     finally:
         os.chdir(opath)
-        logger.info('7777777777777777777777')
         utility.kill(pid)
         utility.remove_file(reportpath)
         utility.remove_file(script_path_zip)
