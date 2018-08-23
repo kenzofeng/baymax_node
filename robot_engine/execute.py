@@ -23,12 +23,12 @@ def run_script(request, project, test_id):
         reportpath_zip = os.path.join(env.report, "%s.zip" % test_id)
         utility.remove_file(reportpath)
         utility.remove_file(reportpath_zip)
-        with open(script_path_zip, 'wb') as sc:
-            for chunk in script.chunks():
-                sc.write(chunk)
-        utility.extract_zip(script_path_zip, script_path)
-        argfile = os.path.join(script_path, 'argfile.txt')
-        os.chdir(script_path)
+        # with open(script_path_zip, 'wb') as sc:
+        #     for chunk in script.chunks():
+        #         sc.write(chunk)
+        # utility.extract_zip(script_path_zip, script_path)
+        # argfile = os.path.join(script_path, 'argfile.txt')
+        # os.chdir(script_path)
         # if mswindows == False:
         #     os.system('chmod 777 -R *')
         # if os.path.exists(argfile):
