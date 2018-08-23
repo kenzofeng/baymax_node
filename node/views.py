@@ -13,7 +13,7 @@ import env
 from robot_engine import utility
 import subprocess
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('django')
 
 
 def status(request):
