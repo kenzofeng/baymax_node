@@ -25,8 +25,8 @@ def job_start(request, project, test_id):
         # reponse = FileResponse(open(report_zip, 'rb'))
         # reponse["filename"] = "%s_%s" % (project, test_id)
         # return reponse
-        a = "bab"
-        return HttpResponse('sssssssssssssssssssss', content_type='text/html')
+        script = request.FILES['script']
+        return HttpResponse(script, content_type='text/html')
     except Exception as e:
         return HttpResponse(e, content_type='text/html')
 
