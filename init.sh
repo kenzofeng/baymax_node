@@ -3,4 +3,5 @@ yum install gcc libffi-devel python-devel openssl-devel libxml2-devel libxslt-de
 pip install -U setuptools
 pip install -r requirements.txt
 sh  shell/doraemon_install.sh
-ln -s /usr/local/redis/bin/redis-server /usr/bin/redis-server
+cd supervisor
+sh init.sh
