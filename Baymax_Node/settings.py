@@ -131,4 +131,4 @@ LOGGING = {
 }
 
 path = os.environ["PATH"]
-os.environ["PATH"] = '/usr/local/platform/java/bin'+':'+os.environ["PATH"]
+os.environ["PATH"] = '/usr/local/redis/bin:/usr/local/platform/java/bin:/usr/local/mysql/bin'+':'+os.environ["PATH"]
