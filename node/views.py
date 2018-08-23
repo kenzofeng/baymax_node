@@ -20,11 +20,13 @@ def status(request):
 
 @csrf_exempt
 def job_start(request, project, test_id):
-    report_zip = execute.run_script(request, project, test_id)
-    reponse = FileResponse(open(report_zip, 'rb'))
-    reponse["filename"] = "%s_%s" % (project, test_id)
-    return reponse
-
+    try:
+        report_zip = execute.run_script(request, project, test_id)
+        reponse = FileResponse(open(report_zip, 'rb'))
+        reponse["filename"] = "%s_%s" % (project, test_id)
+        return reponse
+    except Exception as e:
+        return HttpResponse(e, content_type='text/html')
 
 def job_stop(request):
     command = "ps -ef|grep 'python -m' |awk '{print $2}'|xargs kill -9"
