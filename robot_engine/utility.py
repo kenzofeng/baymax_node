@@ -59,21 +59,6 @@ def mkdir(dirpath):
     if not os.path.exists(dirpath):
         os.mkdir(dirpath)
 
-
-def logmsgs(logpath, msgs):
-    f = open(os.path.join(env.log, logpath), 'a')
-    f.writelines(msgs)
-    f.write('\n')
-    f.close()
-
-
-def logmsg(logpath, msg):
-    f = open(os.path.join(env.log, logpath), 'a')
-    f.write(msg)
-    f.write('\n')
-    f.close()
-
-
 def remove_file(fpath):
     if os.path.exists(fpath):
         try:
