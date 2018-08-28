@@ -24,7 +24,6 @@ def get_robot_log(robot,mylog):
 
 def run_script(request, project, test_id):
     opath = os.getcwd()
-    pid = 0
     reportpath_zip = ""
     try:
         mylog = Mylogger(os.path.join(env.log, test_id))
@@ -55,7 +54,7 @@ def run_script(request, project, test_id):
         r.start()
         r.join()
         utility.zip_file(reportpath, reportpath_zip)
-        utility.kill(robot.pid)
+        # utility.kill(robot.pid)
     except Exception, e:
         logger.error(e)
         mylog.robot_info(e)
