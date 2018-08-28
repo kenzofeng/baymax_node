@@ -55,12 +55,12 @@ def run_script(request, project, test_id):
         r.start()
         r.join()
         utility.zip_file(reportpath, reportpath_zip)
+        utility.kill(robot.pid)
     except Exception, e:
         logger.error(e)
         mylog.robot_info(e)
     finally:
         os.chdir(opath)
-        utility.kill(robot.pid)
         utility.remove_file(reportpath)
         utility.remove_file(script_path_zip)
         # utility.remove_file(script_path)
