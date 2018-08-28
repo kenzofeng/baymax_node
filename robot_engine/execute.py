@@ -57,8 +57,9 @@ def run_script(request, project, test_id):
         r.join()
         try:
             if robot is not None:
-                robot.terminate()
-                robot.kill()
+                # robot.terminate()
+                # robot.kill()
+                os.killpg(os.getpgid(robot.pid), 9)
         except Exception:
             pass
         utility.zip_file(reportpath, reportpath_zip)
