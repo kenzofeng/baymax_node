@@ -6,6 +6,7 @@ class Mylogger():
         self.path = path
         self.logger_robot = logging.getLogger('robot')
         self.logger_app = logging.getLogger('app')
+        self.init_logger()
 
     def init_logger(self):
         rf = logging.FileHandler(self.path)
