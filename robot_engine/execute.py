@@ -4,7 +4,7 @@ import shlex
 import subprocess
 import threading
 import requests
-
+import time
 import utility
 from mylogger import Mylogger
 from node import env
@@ -12,7 +12,25 @@ from node import env
 logger = logging.getLogger('django')
 
 
-def get_robot_log(robot,mylog):
+def tailf(filename):
+    f = open(filename, 'r')
+    f.seek(0, 2)
+    while True:
+        line = f.readline()
+        if not line:
+            time.sleep(0.1)
+            continue
+        yield line
+
+
+def get_app_log(app_log, mylog,stop_event):
+    if app_log:
+        for i in tailf(app_log):
+            mylog.app_info(i)
+            if stop_event.is_set():
+                return
+
+def get_robot_log(robot, mylog):
     while True:
         log = robot.stdout.readline()
         mylog.robot_info(log.replace('\r\n', ''))
@@ -49,10 +67,15 @@ def run_script(request, project, test_id):
         else:
             command = "python -m robot.run --outputdir %s  %s" % (argfile, reportpath, script_path)
         mylog.robot_info(command)
-        robot = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.STDOUT,close_fds=True, preexec_fn = os.setsid)
-        r = threading.Thread(target=get_robot_log, args=(robot,mylog))
+        robot = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True,
+                                 preexec_fn=os.setsid)
+        r = threading.Thread(target=get_robot_log, args=(robot, mylog))
+        a_stop = threading.Event()
+        a = threading.Thread(target=get_app_log, args=('/usr/locallogs/carlson-adapter.log', mylog,a_stop))
+        a.start()
         r.start()
         r.join()
+        a_stop.set()
         utility.zip_file(reportpath, reportpath_zip)
         utility.kill(robot)
     except Exception, e:
