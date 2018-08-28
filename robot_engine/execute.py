@@ -64,6 +64,7 @@ def run_script(request, project, test_id):
         os.chdir(opath)
         utility.kill(pid)
         utility.remove_file(reportpath)
+        utility.remove_file(reportpath_zip)
         utility.remove_file(script_path_zip)
         # utility.remove_file(script_path)
         return reportpath_zip
