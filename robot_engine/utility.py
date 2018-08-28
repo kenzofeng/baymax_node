@@ -122,7 +122,8 @@ def zip_file(sourcefile, targetfile):
 
 def kill(pid):
     try:
-        os.killpg(os.getpgid(pid), 9)
+        # os.killpg(os.getpgid(pid), 9)
+        os.killpg(pid, signal.SIGUSR1)
         # os.kill(pid, signal.SIGTERM)
     except Exception as e:
         logger.error(e)

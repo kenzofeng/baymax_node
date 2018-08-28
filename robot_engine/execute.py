@@ -49,7 +49,7 @@ def run_script(request, project, test_id):
         else:
             command = "python -m robot.run --outputdir %s  %s" % (argfile, reportpath, script_path)
         mylog.robot_info(command)
-        robot = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        robot = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.STDOUT,close_fds=True, preexec_fn = os.setsid)
         r = threading.Thread(target=get_robot_log, args=(robot,mylog))
         r.start()
         r.join()
