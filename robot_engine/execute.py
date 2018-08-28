@@ -1,12 +1,13 @@
+import logging
 import os
+import shlex
+import subprocess
+
+import requests
 
 import utility
+from mylogger import Mylogger
 from node import env
-import subprocess
-import sys
-import requests
-import shlex
-import logging
 
 logger = logging.getLogger('django')
 
@@ -16,7 +17,8 @@ def run_script(request, project, test_id):
     pid = 0
     reportpath_zip = ""
     try:
-        utility.logmsgs(os.path.join(env.log, test_id), "ip:%s \nid:%s \nlog:"%(requests.get('http://ip.42.pl/raw').text,test_id))
+        mylog = Mylogger(os.path.join(env.log, test_id))
+        mylog.robot_info("ip:%s \nid:%s \nlog:" % (requests.get('http://ip.42.pl/raw').text, test_id))
         script = request.FILES['script']
         script_path_zip = os.path.join(env.test, request.POST['filename'])
         script_path = os.path.join(env.test, project)
@@ -37,12 +39,13 @@ def run_script(request, project, test_id):
             command = "python -m robot.run --argumentfile %s --outputdir %s  %s" % (argfile, reportpath, script_path)
         else:
             command = "python -m robot.run --outputdir %s  %s" % (argfile, reportpath, script_path)
-        utility.logmsgs(os.path.join(env.log, test_id), command)
+        mylog.robot_info(command)
         robot = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         pid = robot.pid
+
         while True:
             log = robot.stdout.readline()
-            utility.logmsgs(os.path.join(env.log, test_id), log.replace('\r\n', ''))
+            mylog.robot_info(log.replace('\r\n', ''))
             if 'Report:' in log and 'report.html' in log:
                 break
             if robot.poll() is not None:
@@ -56,7 +59,7 @@ def run_script(request, project, test_id):
         utility.zip_file(reportpath, reportpath_zip)
     except Exception, e:
         logger.error(e)
-        utility.logmsgs(os.path.join(env.log, test_id), e)
+        mylog.robot_error(e)
     finally:
         os.chdir(opath)
         utility.kill(pid)
