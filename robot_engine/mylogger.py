@@ -6,6 +6,8 @@ class Mylogger():
         self.path = path
         self.logger_robot = logging.getLogger('robot')
         self.logger_app = logging.getLogger('app')
+        self.logger_robot.setLevel(logging.INFO)
+        self.logger_app.setLevel(logging.INFO)
         self.init_logger()
 
     def init_logger(self):
@@ -15,8 +17,8 @@ class Mylogger():
         formatter = logging.Formatter(fmt)
         rf.setFormatter(formatter)
         af.setFormatter(formatter)
-        self.logger_robot.addFilter(rf)
-        self.logger_app.addFilter(af)
+        self.logger_robot.addHandler(rf)
+        self.logger_app.addHandler(af)
 
     def robot_info(self, msg):
         self.logger_robot.info(msg)
