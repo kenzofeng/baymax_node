@@ -120,13 +120,17 @@ def zip_file(sourcefile, targetfile):
     zf.close()
 
 
-def kill(pid):
-    try:
-        # os.killpg(os.getpgid(pid), 9)
-        os.killpg(pid, signal.SIGUSR1)
-        # os.kill(pid, signal.SIGTERM)
-    except Exception as e:
-        logger.error(e)
+def kill(p):
+    if p is None:
+        return
+    else:
+        logger.info(p.pid)
+        try:
+            # os.killpg(os.getpgid(pid), 9)
+            os.killpg(p.pid, signal.SIGUSR1)
+            # os.kill(pid, signal.SIGTERM)
+        except Exception as e:
+            logger.error(e)
 
 
 def extract_zip(source, target):
