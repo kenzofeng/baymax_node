@@ -54,7 +54,7 @@ def run_script(request, project, test_id):
         r.start()
         r.join()
         utility.zip_file(reportpath, reportpath_zip)
-        # utility.kill(robot.pid)
+        utility.kill(robot.pid)
     except Exception, e:
         logger.error(e)
         mylog.robot_info(e)

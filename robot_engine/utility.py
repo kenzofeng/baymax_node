@@ -1,3 +1,4 @@
+import logging
 import os
 import random
 import re
@@ -12,6 +13,7 @@ import svn.local
 from node import env
 
 mswindows = (sys.platform == "win32")
+logger = logging.getLogger('django')
 
 
 def rendestring(string):
@@ -58,6 +60,7 @@ def gettime(format='%Y-%m-%d %H:%M:%S'):
 def mkdir(dirpath):
     if not os.path.exists(dirpath):
         os.mkdir(dirpath)
+
 
 def remove_file(fpath):
     if os.path.exists(fpath):
@@ -121,8 +124,8 @@ def kill(pid):
     try:
         os.killpg(os.getpgid(pid), 9)
         # os.kill(pid, signal.SIGTERM)
-    except Exception:
-        pass
+    except Exception as e:
+        logger.error(e)
 
 
 def extract_zip(source, target):
