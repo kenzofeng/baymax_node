@@ -70,12 +70,12 @@ def run_script(request, project, test_id):
         robot = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True,
                                  preexec_fn=os.setsid)
         r = threading.Thread(target=get_robot_log, args=(robot, mylog))
-        a_stop = threading.Event()
-        a = threading.Thread(target=get_app_log, args=('/usr/locallogs/carlson-adapter.log', mylog,a_stop))
-        a.start()
+        # a_stop = threading.Event()
+        # a = threading.Thread(target=get_app_log, args=('/usr/locallogs/carlson-adapter.log', mylog,a_stop))
+        # a.start()
         r.start()
         r.join()
-        a_stop.set()
+        # a_stop.set()
         utility.zip_file(reportpath, reportpath_zip)
         utility.kill(robot)
     except Exception, e:
