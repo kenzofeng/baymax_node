@@ -51,24 +51,16 @@ def run_script(request, project, test_id):
             command = "python -m robot.run --outputdir %s  %s" % (argfile, reportpath, script_path)
         mylog.robot_info(command)
         robot = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        pid = robot.pid
         r = threading.Thread(target=get_robot_log, args=(robot,mylog))
         r.start()
         r.join()
-        try:
-            if robot is not None:
-                # robot.terminate()
-                # robot.kill()
-                os.killpg(os.getpgid(robot.pid), 9)
-        except Exception:
-            pass
         utility.zip_file(reportpath, reportpath_zip)
     except Exception, e:
         logger.error(e)
         mylog.robot_info(e)
     finally:
         os.chdir(opath)
-        utility.kill(pid)
+        utility.kill(robot.pid)
         utility.remove_file(reportpath)
         utility.remove_file(script_path_zip)
         # utility.remove_file(script_path)
