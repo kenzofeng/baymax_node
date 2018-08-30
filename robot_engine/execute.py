@@ -74,8 +74,7 @@ def run_script(request, project, test_id):
                                  preexec_fn=os.setsid)
         a_stop = threading.Event()
         for app, applog in zip(apps, applogs):
-            mylog.robot_info(app)
-            mylog.robot_info(applog)
+            mylog.robot_info("app:{} log:{}".format(app,applog))
             a = threading.Thread(target=get_app_log, args=(app, applog, mylog, a_stop))
             a.start()
         r = threading.Thread(target=get_robot_log, args=(robot, mylog))
