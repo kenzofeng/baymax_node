@@ -23,12 +23,13 @@ def tailf(filename):
         yield line
 
 
-def get_app_log(app_log, mylog,stop_event):
+def get_app_log(app, app_log, mylog, stop_event):
     if app_log:
         for i in tailf(app_log):
-            mylog.app_info(i)
+            mylog.app_info(app, i)
             if stop_event.is_set():
                 return
+
 
 def get_robot_log(robot, mylog):
     while True:
@@ -44,7 +45,9 @@ def run_script(request, project, test_id):
     opath = os.getcwd()
     reportpath_zip = ""
     try:
-        mylog = Mylogger(os.path.join(env.log, test_id))
+        applogs = request.FILES['app'].splite(":")
+        apps = [os.path.splitext(os.path.basename(applog))[0] for applog in applogs]
+        mylog = Mylogger(os.path.join(env.log, test_id), apps)
         mylog.robot_info("ip:%s id:%s" % (requests.get('http://ip.42.pl/raw').text, test_id))
         script = request.FILES['script']
         script_path_zip = os.path.join(env.test, request.POST['filename'])
@@ -70,12 +73,13 @@ def run_script(request, project, test_id):
         robot = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True,
                                  preexec_fn=os.setsid)
         r = threading.Thread(target=get_robot_log, args=(robot, mylog))
-        # a_stop = threading.Event()
-        # a = threading.Thread(target=get_app_log, args=('/usr/locallogs/carlson-adapter.log', mylog,a_stop))
-        # a.start()
+        a_stop = threading.Event()
+        for app, applog in zip(apps, applogs):
+            a = threading.Thread(target=get_app_log, args=(app, applog, mylog, a_stop))
+            a.start()
         r.start()
         r.join()
-        # a_stop.set()
+        a_stop.set()
         utility.zip_file(reportpath, reportpath_zip)
         utility.kill(robot)
     except Exception, e:
