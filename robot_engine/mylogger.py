@@ -32,10 +32,10 @@ class Mylogger():
         try:
             getattr(self, app).info(msg.encode("utf-8"))
         except Exception as e:
-            self.logger_robot.info(e)
+            getattr(self, app).info(e)
 
     def app_error(self, app, msg):
         try:
             getattr(self, app).error(msg.encode("utf-8"))
         except Exception as e:
-            self.logger_robot.info(e)
+            getattr(self, app).info(e)
