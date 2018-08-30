@@ -45,7 +45,7 @@ def run_script(request, project, test_id):
     opath = os.getcwd()
     reportpath_zip = ""
     try:
-        applogs = request.FILES['app'].splite(";")
+        applogs = request.POST['app'].splite(";")
         apps = [os.path.splitext(os.path.basename(applog))[0] for applog in applogs]
         mylog = Mylogger(os.path.join(env.log, test_id), apps)
         mylog.robot_info("ip:%s id:%s" % (requests.get('http://ip.42.pl/raw').text, test_id))
