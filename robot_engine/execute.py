@@ -72,13 +72,13 @@ def run_script(request, project, test_id):
         mylog.robot_info(command)
         robot = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True,
                                  preexec_fn=os.setsid)
-        r = threading.Thread(target=get_robot_log, args=(robot, mylog))
         a_stop = threading.Event()
         for app, applog in zip(apps, applogs):
             mylog.robot_info(app)
             mylog.robot_info(applog)
             a = threading.Thread(target=get_app_log, args=(app, applog, mylog, a_stop))
             a.start()
+        r = threading.Thread(target=get_robot_log, args=(robot, mylog))
         r.start()
         r.join()
         a_stop.set()
