@@ -19,8 +19,9 @@ class Mylogger():
         self.logger_robot.addHandler(rf)
         for app in self.apps:
             setattr(self, app, logging.getLogger(app))
-            getattr(self, app).setLevel(logging.INFO)
-            getattr(self, app).addHandler(rf)
+            applog = getattr(self, app)
+            applog.setLevel(logging.INFO)
+            applog.addHandler(rf)
 
     def robot_info(self, msg):
         self.logger_robot.info(msg)

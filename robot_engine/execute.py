@@ -75,7 +75,9 @@ def run_script(request, project, test_id):
         r = threading.Thread(target=get_robot_log, args=(robot, mylog))
         a_stop = threading.Event()
         for app, applog in zip(apps, applogs):
-            a = threading.Thread(target=get_app_log, args=('carlson', '/usr/local/logs/carlson-adapter.log', mylog, a_stop))
+            mylog.robot_info(app)
+            mylog.robot_info(applog)
+            a = threading.Thread(target=get_app_log, args=(app, applog, mylog, a_stop))
             a.start()
         r.start()
         r.join()
