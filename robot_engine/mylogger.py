@@ -29,7 +29,13 @@ class Mylogger():
         self.logger_robot.error(msg)
 
     def app_info(self, app, msg):
-        getattr(self, app).info(msg.encode("utf-8"))
+        try:
+            getattr(self, app).info(msg.encode("utf-8"))
+        except Exception as e:
+            self.logger_robot.info(e)
 
     def app_error(self, app, msg):
-        getattr(self, app).error(msg.encode("utf-8"))
+        try:
+            getattr(self, app).error(msg.encode("utf-8"))
+        except Exception as e:
+            self.logger_robot.info(e)
