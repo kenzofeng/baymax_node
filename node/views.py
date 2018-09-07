@@ -24,9 +24,9 @@ def status(request):
 def job_start(request, project, test_id):
     try:
         report_zip = execute.run_script(request, project, test_id)
-        reponse = FileResponse(open(report_zip, 'rb'))
-        reponse["filename"] = "%s_%s" % (project, test_id)
-        return reponse
+        response = FileResponse(open(report_zip, 'rb'))
+        response["filename"] = "%s_%s" % (project, test_id)
+        return response
     except Exception as e:
         return HttpResponse(e, content_type='text/html')
 
