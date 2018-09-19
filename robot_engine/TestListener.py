@@ -1,29 +1,35 @@
-from robot.api import logger
+import os
+import tempfile
 
 
-class TestListener:
+class PythonListener:
     ROBOT_LISTENER_API_VERSION = 2
+
     def __init__(self):
-        logger.info('111111111111111')
+        outpath = os.path.join(tempfile.gettempdir(), 'listen.txt')
+        self.outfile = open(outpath, 'w')
 
     def start_keyword(self, name, attrs):
-        logger.info("%s '%s'\n" % (name, attrs['args']))
+        self.outfile.write("%s '%s'\n" % (name, attrs['args']))
 
     def end_keyword(self, name, attrs):
-        logger.info("%s '%s'\n" % (name, attrs['args']))
+        self.outfile.write("%s '%s'\n" % (name, attrs['args']))
 
     def start_suite(self, name, attrs):
-        logger.info("%s '%s'\n" % (name, attrs['doc']))
+        self.outfile.write("%s '%s'\n" % (name, attrs['doc']))
 
     def start_test(self, name, attrs):
         tags = ' '.join(attrs['tags'])
-        logger.info("- %s '%s' [ %s ] :: " % (name, attrs['doc'], tags))
+        self.outfile.write("- %s '%s' [ %s ] :: " % (name, attrs['doc'], tags))
 
     def end_test(self, name, attrs):
         if attrs['status'] == 'PASS':
-            logger.info('PASS\n')
+            self.outfile.write('PASS\n')
         else:
-            logger.info('FAIL: %s\n' % attrs['message'])
+            self.outfile.write('FAIL: %s\n' % attrs['message'])
 
     def end_suite(self, name, attrs):
-        logger.info('%s\n%s\n' % (attrs['status'], attrs['message']))
+        self.outfile.write('%s\n%s\n' % (attrs['status'], attrs['message']))
+
+    def close(self):
+        self.outfile.close()
