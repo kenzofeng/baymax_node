@@ -6,7 +6,7 @@ class TestListener:
 
     def __init__(self, path):
         self.logger = logging.getLogger('listener')
-        self.logger_robot.setLevel(logging.INFO)
+        self.logger.setLevel(logging.INFO)
         self.logger.addFilter(logging.FileHandler(path))
         self.logger.info('111111111111111111')
 
