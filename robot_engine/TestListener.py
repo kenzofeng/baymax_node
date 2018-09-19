@@ -5,6 +5,8 @@ LOGGER = logging.getLogger('robot')
 
 class TestListener:
     ROBOT_LISTENER_API_VERSION = 2
+    def __init__(self):
+        LOGGER.info('111111111111111')
 
     def start_keyword(self, name, attrs):
         LOGGER.info("%s '%s'\n" % (name, attrs['args']))
