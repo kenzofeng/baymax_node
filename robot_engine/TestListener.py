@@ -2,7 +2,7 @@ import os
 import tempfile
 
 
-class PythonListener:
+class TestListener:
     ROBOT_LISTENER_API_VERSION = 2
 
     def __init__(self):
