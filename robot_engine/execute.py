@@ -10,6 +10,9 @@ from mylogger import Mylogger
 from node import env
 
 logger = logging.getLogger('django')
+BaseDir = os.path.dirname(os.path.abspath(__file__))
+
+listener = os.path.join(BaseDir, 'TestRunnerAgent.py')
 
 
 def tailf(filename):
@@ -66,15 +69,17 @@ def run_script(request, project, test_id):
         os.chdir(script_path)
         os.system('chmod 777 -R *')
         if os.path.exists(argfile):
-            command = "python -m robot.run --argumentfile %s --outputdir %s  %s" % (argfile, reportpath, script_path)
+            command = "python -m robot.run --argumentfile {} --listener {} --outputdir {}  {}".format(argfile, listener,
+                                                                                                      reportpath,
+                                                                                                      script_path)
         else:
-            command = "python -m robot.run --outputdir %s  %s" % (argfile, reportpath, script_path)
+            command = "python -m robot.run --outputdir {} --listener {} {}" % (reportpath, listener, script_path)
         mylog.robot_info(command)
         robot = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True,
                                  preexec_fn=os.setsid)
         a_stop = threading.Event()
         for app, applog in zip(apps, applogs):
-            mylog.robot_info("app:{} log:{}".format(app,applog))
+            mylog.robot_info("app:{} log:{}".format(app, applog))
             a = threading.Thread(target=get_app_log, args=(app, applog, mylog, a_stop))
             a.start()
         r = threading.Thread(target=get_robot_log, args=(robot, mylog))
