@@ -1,7 +1,6 @@
-import os
-import tempfile
-from robot.api import logger
+import logging
 
+logger =logging.getLogger('robot')
 
 class TestListener:
     ROBOT_LISTENER_API_VERSION = 2
