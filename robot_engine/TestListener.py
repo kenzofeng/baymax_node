@@ -1,31 +1,29 @@
-import logging
-
-LOGGER = logging.getLogger('robot')
+from robot.api import logger
 
 
 class TestListener:
     ROBOT_LISTENER_API_VERSION = 2
     def __init__(self):
-        LOGGER.info('111111111111111')
+        logger.info('111111111111111')
 
     def start_keyword(self, name, attrs):
-        LOGGER.info("%s '%s'\n" % (name, attrs['args']))
+        logger.log_message("%s '%s'\n" % (name, attrs['args']))
 
     def end_keyword(self, name, attrs):
-        LOGGER.info("%s '%s'\n" % (name, attrs['args']))
+        logger.log_message("%s '%s'\n" % (name, attrs['args']))
 
     def start_suite(self, name, attrs):
-        LOGGER.info("%s '%s'\n" % (name, attrs['doc']))
+        logger.log_message("%s '%s'\n" % (name, attrs['doc']))
 
     def start_test(self, name, attrs):
         tags = ' '.join(attrs['tags'])
-        LOGGER.info("- %s '%s' [ %s ] :: " % (name, attrs['doc'], tags))
+        logger.log_message("- %s '%s' [ %s ] :: " % (name, attrs['doc'], tags))
 
     def end_test(self, name, attrs):
         if attrs['status'] == 'PASS':
-            LOGGER.info('PASS\n')
+            logger.log_message('PASS\n')
         else:
-            LOGGER.info('FAIL: %s\n' % attrs['message'])
+            logger.log_message('FAIL: %s\n' % attrs['message'])
 
     def end_suite(self, name, attrs):
-        LOGGER.info('%s\n%s\n' % (attrs['status'], attrs['message']))
+        logger.log_message('%s\n%s\n' % (attrs['status'], attrs['message']))
