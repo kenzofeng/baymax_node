@@ -18,4 +18,5 @@ def execute_shell():
             log = open(os.path.join(logpath, "{}.log".format(filename)), 'w')
             subprocess.call(shlex.split(command), stdout=log, stderr=subprocess.STDOUT)
 
-# scheduler.add_job(execute_shell, 'interval', minutes=5)
+
+# scheduler.add_job(execute_shell, 'interval', minutes=30)
