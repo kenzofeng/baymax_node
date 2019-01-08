@@ -1,5 +1,4 @@
 Django==1.11.5
-svn==0.3.45
 robotframework==3.0.2
 apscheduler==3.5.1
 requests==2.11.1

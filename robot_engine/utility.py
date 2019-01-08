@@ -8,58 +8,56 @@ import zipfile
 import zlib
 from datetime import *
 
-import svn.local
-
 from node import env
 
 mswindows = (sys.platform == "win32")
 logger = logging.getLogger('django')
 
 
-def rendestring(string):
-    if string != "":
-        _variable_pattern = r'\$\{[^\}]+\}'
-        match = re.findall(_variable_pattern, string)
-        if match:
-            for arg in match:
-                string = string.replace(arg, str(get_variable_value(arg)))
-        return string
+# def rendestring(string):
+#     if string != "":
+#         _variable_pattern = r'\$\{[^\}]+\}'
+#         match = re.findall(_variable_pattern, string)
+#         if match:
+#             for arg in match:
+#                 string = string.replace(arg, str(get_variable_value(arg)))
+#         return string
 
 
-def matchre(path):
-    warpath = os.path.split(path)
-    filelist = os.listdir(warpath[0])
-    for f in filelist:
-        if warpath[-1] == f:
-            return os.path.join(warpath[0], f)
-        pattern = re.compile(warpath[-1].replace('$', '\\'))
-        match = pattern.match(f)
-        if match:
-            return os.path.join(warpath[0], match.group())
+# def matchre(path):
+#     warpath = os.path.split(path)
+#     filelist = os.listdir(warpath[0])
+#     for f in filelist:
+#         if warpath[-1] == f:
+#             return os.path.join(warpath[0], f)
+#         pattern = re.compile(warpath[-1].replace('$', '\\'))
+#         match = pattern.match(f)
+#         if match:
+#             return os.path.join(warpath[0], match.group())
+
+#
+# def get_variable_value(arg):
+#     if env.variables.has_key(arg):
+#         return env.variables[arg]
+#     else:
+#         return arg
 
 
-def get_variable_value(arg):
-    if env.variables.has_key(arg):
-        return env.variables[arg]
-    else:
-        return arg
+# def gettoday():
+#     return datetime.now().strftime('%Y%m%d')
+
+#
+# def getnow():
+#     return datetime.now().strftime('%H%M%S')
+
+#
+# def gettime(format='%Y-%m-%d %H:%M:%S'):
+#     return datetime.now().strftime(format)
 
 
-def gettoday():
-    return datetime.now().strftime('%Y%m%d')
-
-
-def getnow():
-    return datetime.now().strftime('%H%M%S')
-
-
-def gettime(format='%Y-%m-%d %H:%M:%S'):
-    return datetime.now().strftime(format)
-
-
-def mkdir(dirpath):
-    if not os.path.exists(dirpath):
-        os.mkdir(dirpath)
+# def mkdir(dirpath):
+#     if not os.path.exists(dirpath):
+#         os.mkdir(dirpath)
 
 
 def remove_file(fpath):
@@ -78,31 +76,26 @@ def remove_file(fpath):
             print e
 
 
-def save_test_log(test):
-    log_path = os.path.join(env.log, test.test_log.path)
-    f = open(log_path, 'rb')
-    fstr = f.read()
-    f.close()
-    gzipstr = zlib.compress(fstr)
-    test.test_log.text = gzipstr.encode("base64")
-    test.test_log.save()
-    remove_file(log_path)
+# def save_test_log(test):
+#     log_path = os.path.join(env.log, test.test_log.path)
+#     f = open(log_path, 'rb')
+#     fstr = f.read()
+#     f.close()
+#     gzipstr = zlib.compress(fstr)
+#     test.test_log.text = gzipstr.encode("base64")
+#     test.test_log.save()
+#     remove_file(log_path)
 
 
-def save_log(job):
-    log_path = os.path.join(env.log, job.log.path)
-    f = open(log_path, 'rb')
-    fstr = f.read()
-    f.close()
-    gzipstr = zlib.compress(fstr)
-    job.log.text = gzipstr.encode("base64")
-    job.log.save()
-    remove_file(log_path)
-
-
-def update_Doraemon():
-    D = svn.local.LocalClient(env.Doraemon)
-    D.update()
+# def save_log(job):
+#     log_path = os.path.join(env.log, job.log.path)
+#     f = open(log_path, 'rb')
+#     fstr = f.read()
+#     f.close()
+#     gzipstr = zlib.compress(fstr)
+#     job.log.text = gzipstr.encode("base64")
+#     job.log.save()
+#     remove_file(log_path)
 
 
 def zip_file(sourcefile, targetfile):
@@ -138,18 +131,17 @@ def extract_zip(source, target):
     for ff in f.namelist():
         f.extract(ff, target)
 
+# def random_str(randomlength=15):
+#     str = ''
+#     chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789'
+#     length = len(chars) - 1
+#     for i in range(randomlength):
+#         str += chars[random.randint(0, length)]
+#     return str
 
-def random_str(randomlength=15):
-    str = ''
-    chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789'
-    length = len(chars) - 1
-    for i in range(randomlength):
-        str += chars[random.randint(0, length)]
-    return str
 
-
-def conver_To_Boolean(value):
-    if value.lower() == "true":
-        return True
-    else:
-        return False
+# def conver_To_Boolean(value):
+#     if value.lower() == "true":
+#         return True
+#     else:
+#         return False
