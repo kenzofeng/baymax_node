@@ -19,4 +19,4 @@ def execute_shell():
             subprocess.call(shlex.split(command), stdout=log, stderr=subprocess.STDOUT)
 
 
-# scheduler.add_job(execute_shell, 'interval', minutes=30)
+scheduler.add_job(execute_shell)
