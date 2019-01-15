@@ -2,3 +2,5 @@
 /Pipfile.lock
 /Pipfile
 /node/migrations/
+/server.ini
+/db.sqlite3

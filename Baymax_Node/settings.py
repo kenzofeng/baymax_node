@@ -129,6 +129,7 @@ LOGGING = {
         },
     },
 }
-
+EC2_META_DATA_URL = "http://169.254.169.254/latest/meta-data/instance-id"
+SERVER_URL = "http://172.27.0.240"
 path = os.environ["PATH"]
-os.environ["PATH"] = '/usr/local/redis/bin:/usr/local/platform/java/bin:/usr/local/mysql/bin'+':'+os.environ["PATH"]
+os.environ["PATH"] = '/usr/local/redis/bin:/usr/local/platform/java/bin:/usr/local/mysql/bin' + ':' + os.environ["PATH"]

@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import logging
+import os
 import shlex
+import subprocess
 
 from django.http import FileResponse, HttpResponse, JsonResponse
-# Create your views here.
+from Baymax_Node.jobs import *
 from django.views.decorators.csrf import csrf_exempt
 
-from robot_engine import execute
-import os
 import env
+from robot_engine import execute
 from robot_engine import utility
-import subprocess
-import logging
+
 logger = logging.getLogger('django')
 
 
@@ -29,6 +30,7 @@ def job_start(request, project, test_id):
         return response
     except Exception as e:
         return HttpResponse(e, content_type='text/html')
+
 
 def job_stop(request):
     command = "ps -ef|grep 'python -m' |awk '{print $2}'|xargs kill -9"
