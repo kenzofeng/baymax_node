@@ -44,12 +44,18 @@ def get_ip():
 def register_server():
     server_ini = os.path.join(Base_DIR, "server.ini")
     if os.path.exists(server_ini):
-        instance_id = get_instance_id() or str(uuid.uuid1())
-        private_ip, public_ip = get_ip()
-        server_url = settings.SERVER_URL
         config = ConfigParser.ConfigParser()
         config.read(server_ini)
+
+        try:
+            instance_id = config.get('Server', 'instance_id', None)
+        except Exception:
+            instance_id = get_instance_id() or str(uuid.uuid1())
+            config.set('Server', 'instance_id', instance_id)
+            config.write(open(server_ini, 'wb'))
         node_name = "{}_{}".format(config.get('Server', 'name'), instance_id)
+        private_ip, public_ip = get_ip()
+        server_url = settings.SERVER_URL
         try:
             requests.post('{}/api/register/'.format(server_url),
                           json={"instance_id": instance_id, "private_ip": private_ip, "public_ip": public_ip,
