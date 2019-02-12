@@ -14,3 +14,4 @@ pip install -U synchronizer-client-1 -i http://172.27.0.172:8080/simple  --trust
 pip install -U synchronizer-client-2 -i http://172.27.0.172:8080/simple  --trusted-host 172.27.0.172
 pip install -U synchronizer-server-1 -i http://172.27.0.172:8080/simple  --trusted-host 172.27.0.172
 pip install -U synchronizer-server-2 -i http://172.27.0.172:8080/simple  --trusted-host 172.27.0.172
+pip install -U protocol_proxy -i http://172.27.0.172:8080/simple  --trusted-host 172.27.0.172
