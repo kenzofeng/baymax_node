@@ -37,7 +37,7 @@ def get_instance_id():
 def get_ip():
     private_ip = socket.gethostbyname(socket.gethostname())
     rs = requests.get("http://httpbin.org/ip")
-    public_ip = rs.json()['origin']
+    public_ip = rs.json()['origin'].split(',')[0]
     return private_ip, public_ip
 
 
