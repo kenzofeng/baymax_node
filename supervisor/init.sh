@@ -6,5 +6,6 @@ sudo cp baymax.conf /etc/supervisor/conf.d/
 sudo mkdir -p /var/run/supervisord
 sudo /usr/local/bin/supervisord -c /etc/supervisord.conf
 sed -i '$a sudo /usr/local/bin/supervisord -c /etc/supervisord.conf' /etc/rc.d/rc.local
-sed -i '$a sudo supervisorctl start' /etc/rc.d/rc.local
+sed -i '$a cd /usr/local/data/baymax_node && sudo git pull' /etc/rc.d/rc.local
+sed -i '$a sudo supervisorctl start baymax' /etc/rc.d/rc.local
 sudo ln -s /usr/local/bin/supervisorctl /usr/bin/supervisorctl
