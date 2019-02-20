@@ -53,8 +53,8 @@ def run_script(request, project, test_id):
         mylog = Mylogger(os.path.join(env.log, test_id), apps)
         private_ip, public_ip = utility.get_ip()
         mylog.robot_info("private_ip:{} | public_ip:{} | instance_id:{} | test_id:{}".format(private_ip, public_ip,
-                                                                                             utility.get_instance_id(),
-                                                                                             test_id))
+                                                                                       utility.get_instance_id(),
+                                                                                       test_id))
         script = request.FILES['script']
         script_path_zip = os.path.join(env.test, request.POST['filename'])
         script_path = os.path.join(env.test, project)
@@ -72,13 +72,14 @@ def run_script(request, project, test_id):
         os.chdir(script_path)
         os.system('chmod 777 -R *')
         if os.path.exists(argfile):
-            command = "cd {}".format(script_path)
+            command = "cd {}&&python -m robot.run --argumentfile {} --outputdir {}  {} ".format(script_path,argfile, reportpath,
+                                                                                         script_path)
             # command = "python -m robot.run --argumentfile {} --outputdir {} --listener {}  {} ".format(argfile,
             #                                                                                            reportpath,
             #                                                                                            listener,
             #                                                                                            script_path)
         else:
-            command = "cd {}&&python -m robot.run --outputdir {} {}".format(script_path, reportpath, script_path)
+            command = "cd {}&&python -m robot.run --outputdir {} {}".format(script_path,reportpath, script_path)
         mylog.robot_info(command)
         robot = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         a_stop = threading.Event()
