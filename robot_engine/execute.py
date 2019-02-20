@@ -72,9 +72,7 @@ def run_script(request, project, test_id):
         os.chdir(script_path)
         os.system('chmod 777 -R *')
         if os.path.exists(argfile):
-            command = "cd {}&&python -m robot.run --argumentfile {} --outputdir {}  {} ".format(script_path, argfile,
-                                                                                                reportpath,
-                                                                                                script_path)
+            command = "cd {}".format(script_path)
             # command = "python -m robot.run --argumentfile {} --outputdir {} --listener {}  {} ".format(argfile,
             #                                                                                            reportpath,
             #                                                                                            listener,
