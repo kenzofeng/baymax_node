@@ -6,7 +6,7 @@ import ConfigParser
 import requests
 from apscheduler.schedulers.background import BackgroundScheduler
 from django.conf import settings
-import socket
+from robot_engine import utility
 import uuid
 
 logger = logging.getLogger('django')
@@ -26,21 +26,6 @@ def execute_shell():
             subprocess.call(shlex.split(command), stdout=log, stderr=subprocess.STDOUT)
 
 
-def get_instance_id():
-    try:
-        rs = requests.get(settings.EC2_META_DATA_URL, timeout=5)
-        return rs.content
-    except Exception:
-        return None
-
-
-def get_ip():
-    private_ip = socket.gethostbyname(socket.gethostname())
-    rs = requests.get("http://httpbin.org/ip")
-    public_ip = rs.json()['origin'].split(',')[0]
-    return private_ip, public_ip
-
-
 def register_server():
     server_ini = os.path.join(Base_DIR, "server.ini")
     if os.path.exists(server_ini):
@@ -50,11 +35,11 @@ def register_server():
         try:
             instance_id = config.get('Server', 'instance_id', None)
         except Exception:
-            instance_id = get_instance_id() or str(uuid.uuid1())
+            instance_id = utility.get_instance_id() or str(uuid.uuid1())
             config.set('Server', 'instance_id', instance_id)
             config.write(open(server_ini, 'wb'))
         node_name = "{}_{}".format(config.get('Server', 'name'), instance_id)
-        private_ip, public_ip = get_ip()
+        private_ip, public_ip = utility.get_ip()
         server_url = settings.SERVER_URL
         try:
             requests.post('{}/api/register/'.format(server_url),
