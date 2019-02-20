@@ -52,7 +52,7 @@ def run_script(request, project, test_id):
         apps = [os.path.splitext(os.path.basename(applog))[0] for applog in applogs]
         mylog = Mylogger(os.path.join(env.log, test_id), apps)
         private_ip, public_ip = utility.get_ip()
-        mylog.robot_info("private_ip:{}|public_ip:{}|instance_id:{}|test_id:{}".format(private_ip, public_ip,
+        mylog.robot_info("private_ip:{} | public_ip:{} | instance_id:{} | test_id:{}".format(private_ip, public_ip,
                                                                                        utility.get_instance_id(),
                                                                                        test_id))
         script = request.FILES['script']
