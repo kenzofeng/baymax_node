@@ -36,12 +36,15 @@ def get_app_log(app, app_log, mylog, stop_event):
 
 def get_robot_log(robot, mylog):
     while True:
-        log = robot.stdout.readline()
-        mylog.robot_info(log.replace('\r\n', ''))
-        if 'Report:' in log and 'report.html' in log:
-            break
-        if robot.poll() is not None:
-            break
+        try:
+            log = robot.stdout.readline()
+            mylog.robot_info(log.replace('\r\n', ''))
+            if 'Report:' in log and 'report.html' in log:
+                break
+            if robot.poll() is not None:
+                break
+        except Exception as e:
+            logger.error("Get Robot Log Error:{}".format(e))
 
 
 def run_script(request, project, test_id):
