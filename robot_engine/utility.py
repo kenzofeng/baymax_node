@@ -51,7 +51,7 @@ def zip_file(sourcefile, targetfile):
         for root, dirs, files in os.walk(sourcefile):
             for name in files:
                 filelist.append(os.path.join(root, name))
-    zf = zipfile.ZipFile(targetfile, "w", zipfile.zlib.DEFLATED)
+    zf = zipfile.ZipFile(targetfile, "w", zipfile.zlib.DEFLATED, allowZip64=True)
     for tar in filelist:
         arcname = tar[len(sourcefile):]
         zf.write(tar, arcname)
@@ -72,6 +72,6 @@ def kill(p):
 
 
 def extract_zip(source, target):
-    f = zipfile.ZipFile(source, 'r')
+    f = zipfile.ZipFile(source, 'r', allowZip64=True)
     for ff in f.namelist():
         f.extract(ff, target)
