@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-pip install -U doraemon -i http://172.27.0.172:8080/simple  --trusted-host 172.27.0.172
+pip install -U doraemon -i http://10.110.206.111:8899/simple  --trusted-host 10.110.206.111:8899
