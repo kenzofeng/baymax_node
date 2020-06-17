@@ -13,6 +13,7 @@ opath = os.getcwd()
 project = 'project'
 test = os.path.join(BASE_DIR, project, 'test_automation')
 report = os.path.join(BASE_DIR, project, 'report')
+debug = os.path.join(BASE_DIR, project, 'debug')
 log = os.path.join(BASE_DIR, project, 'log')
 tmp = os.path.join(BASE_DIR, project, 'tmp')
 
@@ -24,6 +25,8 @@ if not os.path.exists(log):
     os.makedirs(log)
 if not os.path.exists(tmp):
     os.makedirs(tmp)
+if not os.path.exists(debug):
+    os.makedirs(debug)
 
 log_html = 'log.html'
 report_html = 'report.html'

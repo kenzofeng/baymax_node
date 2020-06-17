@@ -10,6 +10,7 @@ from django.http import FileResponse, HttpResponse, JsonResponse
 from Baymax_Node.jobs import *
 from django.views.decorators.csrf import csrf_exempt
 
+from django.views.decorators.gzip import gzip_page
 import env
 from robot_engine import execute
 from robot_engine import utility
@@ -38,7 +39,7 @@ def job_stop(request):
     rs = stop.stdout.read()
     return HttpResponse(rs, content_type='text/html')
 
-
+@gzip_page
 def test_run_raw_log(request, logid):
     fst = "no log"
     try:
@@ -49,9 +50,9 @@ def test_run_raw_log(request, logid):
             f.close()
     except Exception, e:
         return HttpResponse(e)
-    return HttpResponse(fst, content_type='text/html')
+    return HttpResponse(fst)
 
-
+@gzip_page
 def test_run_log(request, logid):
     joblog = ""
     try:
@@ -64,7 +65,7 @@ def test_run_log(request, logid):
                 joblog = joblog + "<span>%s</span><br/>" % (l)
     except Exception, e:
         return HttpResponse(e)
-    return HttpResponse(joblog, content_type='text/html')
+    return HttpResponse(joblog)
 
 
 def test_run_log_delete(request, logid):

@@ -4,3 +4,9 @@
 /node/migrations/
 /server.ini
 /db.sqlite3
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/.gitignore
+/.idea/baymax_node.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/vcs.xml

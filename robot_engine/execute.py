@@ -41,6 +41,8 @@ def get_robot_log(robot, mylog):
             mylog.robot_info(log.replace('\r\n', ''))
             if 'Report:' in log and 'report.html' in log:
                 break
+            if 'Reading XML source' in log:
+                break
             if robot.poll() is not None:
                 break
         except Exception as e:
@@ -64,6 +66,7 @@ def run_script(request, project, test_id):
         utility.remove_file(script_path)
         utility.remove_file(script_path_zip)
         reportpath = os.path.join(env.report, "%s_%s" % (project, test_id))
+        debugfile = os.path.join(env.debug, "%s_%s" % (project, test_id))
         reportpath_zip = os.path.join(env.report, "%s.zip" % test_id)
         utility.remove_file(reportpath)
         utility.remove_file(reportpath_zip)
@@ -75,12 +78,12 @@ def run_script(request, project, test_id):
         os.chdir(script_path)
         os.system('chmod 777 -R *')
         if os.path.exists(argfile):
-            command = "python -m robot.run --argumentfile {} --outputdir {}  {} ".format(argfile, reportpath,
-                                                                                         script_path)
-            # command = "python -m robot.run --argumentfile {} --outputdir {} --listener {}  {} ".format(argfile,
-            #                                                                                            reportpath,
-            #                                                                                            listener,
-            #                                                                                            script_path)
+            # command = "python -m robot.run --argumentfile {} --outputdir {}  {} ".format(argfile, reportpath,script_path)
+            command = "python -m robot.run --argumentfile {} --outputdir {} --debugfile {} {} ".format(argfile,
+                                                                                                       reportpath,
+                                                                                                       debugfile,
+                                                                                                       script_path)
+            # command = "python -m robot.run --argumentfile {} --outputdir {} --listener {}  {} ".format(argfile,reportpath,listener,script_path)
         else:
             command = "python -m robot.run --outputdir {} {}".format(reportpath, script_path)
         mylog.robot_info(command)
@@ -95,13 +98,14 @@ def run_script(request, project, test_id):
         r.join()
         a_stop.set()
         utility.zip_file(reportpath, reportpath_zip)
-        utility.kill(robot)
     except Exception, e:
         logger.error(e)
         mylog.robot_info(e)
+        raise Exception(str(e))
     finally:
         os.chdir(opath)
         utility.remove_file(reportpath)
         utility.remove_file(script_path_zip)
-        # utility.remove_file(script_path)
+        utility.remove_file(script_path)
+        utility.kill(robot)
         return reportpath_zip
