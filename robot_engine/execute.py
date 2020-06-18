@@ -66,7 +66,7 @@ def run_script(request, project, test_id):
         utility.remove_file(script_path)
         utility.remove_file(script_path_zip)
         reportpath = os.path.join(env.report, "%s_%s" % (project, test_id))
-        debugfile = os.path.join(env.debug, "%s_%s" % (project, test_id))
+        debugfile = os.path.join(env.debug, "%s_%s_debug.txt" % (project, test_id))
         reportpath_zip = os.path.join(env.report, "%s.zip" % test_id)
         utility.remove_file(reportpath)
         utility.remove_file(reportpath_zip)
