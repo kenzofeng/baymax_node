@@ -14,7 +14,7 @@ opath = os.getcwd()
 project = 'project'
 test = os.path.join(BASE_DIR, project, 'test_automation')
 report = os.path.join(BASE_DIR, project, 'report')
-debug = '/usr/local/logs/'
+debug = '/usr/local/logs'
 log = os.path.join(BASE_DIR, project, 'log')
 tmp = os.path.join(BASE_DIR, project, 'tmp')
 
