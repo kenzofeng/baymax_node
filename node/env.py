@@ -1,5 +1,6 @@
 import os
 import sys
+import shutil
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -16,6 +17,12 @@ report = os.path.join(BASE_DIR, project, 'report')
 debug = os.path.join(BASE_DIR, project, 'debug')
 log = os.path.join(BASE_DIR, project, 'log')
 tmp = os.path.join(BASE_DIR, project, 'tmp')
+
+shutil.rmtree(test)
+shutil.rmtree(report)
+shutil.rmtree(debug)
+shutil.rmtree(log)
+shutil.rmtree(tmp)
 
 if not os.path.exists(test):
     os.makedirs(test)
