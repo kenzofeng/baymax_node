@@ -13,6 +13,7 @@ logger = logging.getLogger('django')
 BaseDir = os.path.dirname(os.path.abspath(__file__))
 
 listener = os.path.join(BaseDir, 'TestListener.py')
+TIMEOUT = 10800
 
 
 def tailf(filename):
@@ -35,7 +36,11 @@ def get_app_log(app, app_log, mylog, stop_event):
 
 
 def get_robot_log(robot, mylog):
+    time1 = time.time()
     while True:
+        if time.time() - time1 > float(TIMEOUT):
+            mylog.robot_info("robot execute timeout({})s".format(TIMEOUT))
+            break
         try:
             log = robot.stdout.readline()
             mylog.robot_info(log.replace('\r\n', ''))
