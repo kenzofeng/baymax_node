@@ -18,22 +18,22 @@ debug = '/usr/local/logs'
 log = os.path.join(BASE_DIR, project, 'log')
 tmp = os.path.join(BASE_DIR, project, 'tmp')
 
+shutil.rmtree(test, ignore_errors=True)
+shutil.rmtree(report, ignore_errors=True)
+shutil.rmtree(log, ignore_errors=True)
+shutil.rmtree(tmp, ignore_errors=True)
+
 if not os.path.exists(test):
     os.makedirs(test)
-else:
-    shutil.rmtree(test)
+
 if not os.path.exists(report):
     os.makedirs(report)
-else:
-    shutil.rmtree(report)
+
 if not os.path.exists(log):
     os.makedirs(log)
-else:
-    shutil.rmtree(log)
+
 if not os.path.exists(tmp):
     os.makedirs(tmp)
-else:
-    shutil.rmtree(tmp)
 
 log_html = 'log.html'
 report_html = 'report.html'
