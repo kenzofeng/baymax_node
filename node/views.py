@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 import logging
 import os
 import shlex
-import subprocess
+from subprocess import Popen, PIPE, STDOUT
 
 from django.http import FileResponse, HttpResponse, JsonResponse
 from Baymax_Node.jobs import *
@@ -14,12 +14,28 @@ from django.views.decorators.gzip import gzip_page
 import env
 from robot_engine import execute
 from robot_engine import utility
+import json
 
 logger = logging.getLogger('django')
 
 
 def status(request):
     return JsonResponse({"status": "200"})
+
+
+@csrf_exempt
+def version(request):
+    result_str = ""
+    data = json.loads(request.body)
+    path = data['path']
+    if path:
+        paths = path.split(";")
+        for path in paths:
+            result_str += (path + '\n')
+            p = Popen(shlex.split("grep -E 'git.branch|git.commit.id=' {}".format(path)), stdout=PIPE, stderr=STDOUT)
+            output = p.stdout.read()
+            result_str += output.decode('utf-8')
+    return HttpResponse(result_str, content_type='text/html')
 
 
 @csrf_exempt
@@ -39,6 +55,7 @@ def job_stop(request):
     rs = stop.stdout.read()
     return HttpResponse(rs, content_type='text/html')
 
+
 @gzip_page
 def test_run_raw_log(request, logid):
     fst = "no log"
@@ -51,6 +68,7 @@ def test_run_raw_log(request, logid):
     except Exception, e:
         return HttpResponse(e)
     return HttpResponse(fst)
+
 
 @gzip_page
 def test_run_log(request, logid):
