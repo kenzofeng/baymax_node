@@ -36,11 +36,12 @@ def get_app_log(app, app_log, mylog, stop_event):
 
 
 def get_robot_log(robot, mylog):
-    time1 = time.time()
+    # time1 = time.time()
     while True:
-        if time.time() - time1 > float(TIMEOUT):
-            mylog.robot_info("robot execute timeout({})s".format(TIMEOUT))
-            break
+        # d = time.time() - time1
+        # if d > float(TIMEOUT):
+        #     mylog.robot_info("robot execute timeout({})s".format(d))
+        #     break
         try:
             log = robot.stdout.readline()
             mylog.robot_info(log.replace('\r\n', ''))
