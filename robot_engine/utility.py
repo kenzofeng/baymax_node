@@ -14,16 +14,19 @@ logger = logging.getLogger('django')
 
 def get_instance_id():
     try:
-        rs = requests.get(settings.EC2_META_DATA_URL, timeout=5)
-        return rs.content
+        instance_id = os.environ["POD_NAME"]
+        # rs = requests.get(settings.EC2_META_DATA_URL, timeout=5)
+        return instance_id
     except Exception:
         return None
 
 
 def get_ip():
-    private_ip = socket.gethostbyname(socket.gethostname())
-    rs = requests.get("http://httpbin.org/ip")
-    public_ip = rs.json()['origin'].split(',')[0]
+    public_ip = ""
+    private_ip = os.environ["POD_IP"]
+    # private_ip = socket.gethostbyname(socket.gethostname())
+    # rs = requests.get("http://httpbin.org/ip")
+    # public_ip = rs.json()['origin'].split(',')[0]
     return private_ip, public_ip
 
 

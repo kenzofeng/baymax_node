@@ -1,0 +1,44 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: baymax-node-test
+  namespace: test
+  labels:
+    app: baymax-node-test
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: baymax-node-test
+  template:
+    metadata:
+      labels:
+        app: baymax-node-test
+    spec:
+      containers:
+        - name: mysql
+          image: 'mysql:5.7'
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: password
+        - name: baymax-node
+          image: 'image-center.dbaws.net/qa/baymax_node:1.0'
+          imagePullPolicy: Always
+          env:
+            - name: BAYMAX_SERVER
+              value: "http://baymax-server.test"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.name
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.podIP
+          securityContext:
+            capabilities:
+              add:
+                - SYS_PTRACE
+

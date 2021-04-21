@@ -2,12 +2,9 @@ import logging
 import os
 import shlex
 import subprocess
-import ConfigParser
+
 import requests
 from apscheduler.schedulers.background import BackgroundScheduler
-from django.conf import settings
-from robot_engine import utility
-import uuid
 
 logger = logging.getLogger('django')
 scheduler = BackgroundScheduler()
@@ -22,33 +19,22 @@ def execute_shell():
         for filename in filenames:
             f = os.path.join(dirpath, filename)
             command = "sh {}".format(f)
-            log = open(os.path.join(logpath, "{}.log".format(filename)), 'w')
-            subprocess.call(shlex.split(command), stdout=log, stderr=subprocess.STDOUT)
+            subprocess.call(shlex.split(command))
+            logger.info("execute_shell fiel:{}".format(f))
 
 
 def register_server():
-    server_ini = os.path.join(Base_DIR, "server.ini")
-    if os.path.exists(server_ini):
-        config = ConfigParser.ConfigParser()
-        config.read(server_ini)
-
-        try:
-            instance_id = config.get('Server', 'instance_id', None)
-        except Exception:
-            instance_id = utility.get_instance_id() or str(uuid.uuid1())
-            config.set('Server', 'instance_id', instance_id)
-            config.write(open(server_ini, 'wb'))
-        node_name = "{}_{}".format(config.get('Server', 'name'), instance_id)
-        private_ip, public_ip = utility.get_ip()
-        server_url = settings.SERVER_URL
-        try:
-            requests.post('{}/api/register/'.format(server_url),
-                          json={"instance_id": instance_id, "private_ip": private_ip, "public_ip": public_ip,
-                                "name": node_name}, timeout=5)
-        except Exception as e:
-            logger.error("Register Server Error:{}".format(e))
-    else:
-        logger.error("Register Server ini is not found")
+    try:
+        instance_id = os.environ["POD_NAME"]
+        public_ip = ""
+        private_ip = os.environ["POD_IP"]
+        server_url = os.environ["BAYMAX_SERVER"]
+        res = requests.post('{}/api/register/'.format(server_url),
+                            json={"instance_id": instance_id, "private_ip": private_ip, "public_ip": public_ip,
+                                  "name": instance_id}, timeout=5)
+        logger.info("Register Server Info:{}".format(res.json()))
+    except Exception as e:
+        logger.error("Register Server Error:{}".format(e))
 
 
 scheduler.add_job(execute_shell)
